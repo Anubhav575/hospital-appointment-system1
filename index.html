@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hospital Appointment Scheduling System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- TOP NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="#" class="navbar-brand">
+      <span class="brand-icon">🏥</span> Hospital Management System
+    </a>
+
+    <div class="nav-menu">
+      <a href="#hero" class="nav-item">Home</a>
+      <a href="#specialties" class="nav-item">Specialties</a>
+      <a href="#doctors" class="nav-item">Doctors</a>
+      <a href="#myApptsSection" class="nav-item hidden" id="myApptsNav">My Appointments</a>
+      <a href="#doctorDashboardSection" class="nav-item hidden" id="doctorNav">Doctor Dashboard</a>
+    </div>
+
+    <div class="nav-auth">
+      <!-- Guest -->
+      <div id="guestNav">
+        <button class="btn btn-outline" onclick="openAuthModal('login')">Login</button>
+        <button class="btn btn-primary" onclick="openAuthModal('register')">Sign Up</button>
+      </div>
+
+      <!-- Logged In -->
+      <div id="userNav" class="hidden" style="display:flex; align-items:center; gap:0.75rem;">
+        <span id="navUserName" style="font-weight:500; font-size:0.92rem; color:#fff;"></span>
+        <span id="navUserRole" class="badge badge-patient">Patient</span>
+        <button class="btn btn-danger btn-sm" id="logoutBtn">Log out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION & CAROUSEL (Like HealthcareBooking Demo) -->
+<header id="hero" class="hero">
+  <div class="hero-container">
+    <div class="hero-text">
+      <span class="hero-subtitle">Online Healthcare Scheduling</span>
+      <h1 class="hero-title">Book Doctor Appointments With Zero Waiting Queues</h1>
+      <p class="hero-desc">
+        A simple, fast hospital appointment scheduling system. Select your specialist doctor, choose an open date and time slot, and confirm your visit in seconds.
+      </p>
+      <div class="hero-buttons">
+        <a href="#doctors" class="btn btn-primary btn-lg">Book An Appointment</a>
+        <button class="btn btn-outline btn-lg" onclick="fillLogin('priya@hospital.com', 'doctor123')">Doctor Login Demo</button>
+      </div>
+    </div>
+
+    <!-- 3-Slide Carousel Card -->
+    <div class="hero-carousel">
+      <div class="carousel-slide active" id="slide0">
+        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80" alt="Hospital Facility" class="carousel-img">
+        <div class="carousel-caption">
+          <h3>Modern Clinical Care</h3>
+          <p>Book verified medical practitioners with real-time slot checking.</p>
+        </div>
+      </div>
+      <div class="carousel-slide" id="slide1">
+        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80" alt="Doctor Consultation" class="carousel-img">
+        <div class="carousel-caption">
+          <h3>Qualified Specialists</h3>
+          <p>General Physicians, Cardiologists, Dermatologists & Orthopedics.</p>
+        </div>
+      </div>
+      <div class="carousel-slide" id="slide2">
+        <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=600&q=80" alt="Instant Token Pass" class="carousel-img">
+        <div class="carousel-caption">
+          <h3>Instant Digital Token Pass</h3>
+          <p>Receive your appointment token immediately to show at the desk.</p>
+        </div>
+      </div>
+
+      <div class="carousel-dots">
+        <span class="dot active" onclick="setSlide(0)"></span>
+        <span class="dot" onclick="setSlide(1)"></span>
+        <span class="dot" onclick="setSlide(2)"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ROLE ACTION CARDS (Like HealthcareBooking Demo) -->
+<section class="section container">
+  <div class="section-title-wrap">
+    <h2>Access Portals</h2>
+    <p>Select your user portal to book appointments or manage patient visits.</p>
+  </div>
+
+  <div class="portal-cards-grid">
+    <!-- Patient Card -->
+    <div class="portal-card">
+      <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=400&q=80" alt="Patient Care">
+      <div class="portal-card-content">
+        <h3>Patient Portal</h3>
+        <p>Search doctors, pick your preferred available date and 30-minute time slot, and view appointment history.</p>
+        <button class="btn btn-primary btn-block" onclick="openAuthModal('register')">Register as Patient</button>
+      </div>
+    </div>
+
+    <!-- Doctor Card -->
+    <div class="portal-card">
+      <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80" alt="Doctor Portal">
+      <div class="portal-card-content">
+        <h3>Doctor Portal</h3>
+        <p>Medical staff can sign in to view incoming patient bookings, review consultation reasons, and update visit status.</p>
+        <button class="btn btn-outline-dark btn-block" onclick="fillLogin('priya@hospital.com', 'doctor123')">Login as Doctor</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIALTY DEPARTMENTS -->
+<section id="specialties" class="section bg-light">
+  <div class="container">
+    <div class="section-title-wrap">
+      <h2>Medical Specialties</h2>
+      <p>Filter our expert doctors by department.</p>
+    </div>
+
+    <div class="specialty-pills">
+      <button class="pill active" onclick="filterSpecialty('All')">All Doctors</button>
+      <button class="pill" onclick="filterSpecialty('General Physician')">🩺 General Physician</button>
+      <button class="pill" onclick="filterSpecialty('Cardiologist')">❤️ Cardiologist</button>
+      <button class="pill" onclick="filterSpecialty('Dermatologist')">✨ Dermatologist</button>
+      <button class="pill" onclick="filterSpecialty('Orthopedic')">🦴 Orthopedic</button>
+      <button class="pill" onclick="filterSpecialty('Pediatrician')">👶 Pediatrician</button>
+      <button class="pill" onclick="filterSpecialty('Neurologist')">🧠 Neurologist</button>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTOR DIRECTORY -->
+<section id="doctors" class="section container">
+  <div class="section-title-wrap">
+    <h2>Available Doctors</h2>
+    <p>Choose a doctor and click Book Appointment to pick your time slot.</p>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search doctor by name or specialty..." oninput="filterDoctors()">
+  </div>
+
+  <div id="doctorsGrid" class="doctors-grid"></div>
+</section>
+
+<!-- MY APPOINTMENTS SECTION (For Patients) -->
+<section id="myApptsSection" class="section bg-light hidden">
+  <div class="container">
+    <div class="section-title-wrap">
+      <h2>My Scheduled Appointments</h2>
+      <p>Track your confirmed appointments, cancel visits, or submit doctor feedback.</p>
+    </div>
+    <div id="myApptsList" class="appts-list"></div>
+  </div>
+</section>
+
+<!-- DOCTOR DASHBOARD SECTION (For Doctors) -->
+<section id="doctorDashboardSection" class="section container hidden">
+  <div class="section-title-wrap">
+    <h2>Doctor Dashboard - Patient Appointments</h2>
+    <p>Manage appointments booked with you by patients.</p>
+  </div>
+  <div id="doctorApptsList" class="appts-list"></div>
+</section>
+
+<!-- AUTH MODAL (Login & Register) -->
+<div id="authModal" class="modal-backdrop hidden">
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+      <h3 id="authModalTitle" style="margin:0; font-size:1.35rem;">Sign In</h3>
+      <button class="btn-close" onclick="closeAuthModal()">✕</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Log In</button>
+      <button class="tab-btn" id="tabRegister" onclick="switchAuthTab('register')">Register Patient</button>
+    </div>
+
+    <form id="authForm">
+      <div class="form-group hidden" id="nameGroup">
+        <label>Full Name</label>
+        <input type="text" id="authName" class="form-input" placeholder="e.g. Rahul Sharma">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="authEmail" class="form-input" placeholder="you@hospital.com" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="authPassword" class="form-input" placeholder="At least 6 characters" minlength="6" required>
+      </div>
+      <p id="authError" class="error-msg"></p>
+      <button type="submit" class="btn btn-primary btn-block" id="authSubmitBtn">Log In</button>
+    </form>
+
+    <div class="demo-login-box">
+      <small style="color:#666; font-weight:bold;">Quick Demo Accounts:</small>
+      <div style="display:flex; gap:0.5rem; justify-content:center; margin-top:0.4rem;">
+        <button class="btn btn-sm btn-outline-dark" onclick="fillLogin('priya@hospital.com', 'doctor123')">🩺 Dr. Priya Demo</button>
+        <button class="btn btn-sm btn-outline-dark" onclick="fillLogin('admin@hospital.com', 'admin123')">🔑 Admin Demo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING MODAL -->
+<div id="bookingModal" class="modal-backdrop hidden">
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+      <h3 id="bookDoctorName" style="margin:0; font-size:1.25rem;">Book Appointment</h3>
+      <button class="btn-close" onclick="closeBookingModal()">✕</button>
+    </div>
+    
+    <p id="bookDoctorMeta" style="color:#0284c7; font-weight:bold; margin-bottom:1rem;"></p>
+
+    <div class="form-group">
+      <label>Select Date</label>
+      <input type="date" id="bookDateInput" class="form-input" onchange="loadDoctorSlots()">
+    </div>
+
+    <div class="form-group">
+      <label>Select 30-Minute Time Slot</label>
+      <div id="slotsContainer" class="slots-grid"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Reason for Visit (Optional)</label>
+      <input type="text" id="bookReasonInput" class="form-input" placeholder="e.g. Fever and body ache since 2 days">
+    </div>
+
+    <p id="bookingError" class="error-msg"></p>
+    <button class="btn btn-primary btn-block" id="confirmBookBtn" disabled onclick="confirmBooking()">Please choose a time slot</button>
+  </div>
+</div>
+
+<!-- TICKET TOKEN PASS MODAL -->
+<div id="ticketModal" class="modal-backdrop hidden">
+  <div class="modal-card text-center" style="border: 2px dashed #0284c7;">
+    <p style="text-transform:uppercase; font-size:0.75rem; letter-spacing:1px; color:#666; font-weight:bold;">Appointment Confirmed</p>
+    <div id="tkNumber" class="ticket-badge">MED-101</div>
+    <h3 id="tkDocName" style="margin-bottom:0.25rem;">Dr. Name</h3>
+    <p id="tkSpecialty" style="color:#0284c7; font-weight:bold; margin-bottom:0.5rem;">Specialty</p>
+    <p id="tkTime" style="font-weight:bold;"></p>
+    <p id="tkFee" style="color:#666; font-size:0.9rem; margin-bottom:1.25rem;"></p>
+    <p style="font-size:0.8rem; color:#888; border-top:1px solid #eee; padding-top:0.75rem; margin-bottom:1rem;">
+      Show this token number at the reception desk during your visit.
+    </p>
+    <button class="btn btn-primary btn-block" onclick="closeTicketModal()">Done</button>
+  </div>
+</div>
+
+<!-- FEEDBACK MODAL (Matching Reference Repo) -->
+<div id="feedbackModal" class="modal-backdrop hidden">
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+      <h3 style="margin:0; font-size:1.2rem;">Leave Doctor Feedback</h3>
+      <button class="btn-close" onclick="closeFeedbackModal()">✕</button>
+    </div>
+    <div class="form-group text-center">
+      <label>Rating (1 to 5 Stars)</label>
+      <div class="star-rating">
+        <span class="star" onclick="setRating(1)">★</span>
+        <span class="star" onclick="setRating(2)">★</span>
+        <span class="star" onclick="setRating(3)">★</span>
+        <span class="star" onclick="setRating(4)">★</span>
+        <span class="star" onclick="setRating(5)">★</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Short Review</label>
+      <textarea id="feedbackReview" class="form-input" rows="3" placeholder="Share your experience with the doctor..."></textarea>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="submitFeedback()">Submit Review</button>
+  </div>
+</div>
+
+<!-- FOOTER (Matching HealthcareBooking Demo) -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-col">
+      <h4>Hospital Management System</h4>
+      <p>A simple, queue-free healthcare appointment scheduling application built for computer science minor project demonstration.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Address</h4>
+      <p>City Multispecialty Center<br>Survey No. 3/4, Kondhwa, Pune, MH, India</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <p>Email: <a href="mailto:support@hospital.com">support@hospital.com</a><br>Phone: +91-930-753-1964</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Hospital Appointment Scheduling System | Minor Project</p>
+  </div>
+</footer>
+
+<!-- Toast Alert -->
+<div id="toast" class="toast"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
