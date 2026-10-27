@@ -1,7 +1,6 @@
 # 🏥 Hospital Appointment Scheduling System
-**B.Tech 2nd Year Minor Project**
 
-A clean, responsive Hospital Appointment Scheduling Web Application inspired by the [Project-Based-Learning-IT Healthcare Scheduling App](https://github.com/Project-Based-Learning-IT/healthcare-appointment-scheduling-app/tree/calendar), built with simple, solid fundamentals: **HTML5**, **CSS3**, **Vanilla JavaScript**, **Python (FastAPI)**, and **SQLite3**.
+
 
 ---
 
